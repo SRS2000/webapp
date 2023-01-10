@@ -10,12 +10,12 @@ COPY [".", "WebApp/"]
 RUN dotnet restore "WebApp/WebApp.csproj"
 COPY . .
 WORKDIR "/src/WebApp"
-RUN dotnet build "WebApp.csproj" -c Release -o /app/build
+RUN dotnet build "WebApp.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "WebApp.csproj" -c Release -o /app/publish
+RUN dotnet publish "WebApp.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "WebApp.dll"]
